@@ -41,9 +41,9 @@ class Post(db.Model):
     created = db.DateTimeProperty(auto_now_add=True)
 #Text property is over 500 char
 
-#class Initial(Handler):
-#    def get(self):
-#        self.render('base.html')
+class Initial(Handler):
+    def get(self):
+        self.render('base.html')
 
 #    def post(self):
 #        subject = self.request.get('subject')
@@ -76,20 +76,24 @@ class NewPost(Handler):
             user_post = Post(subject=subject, content=content)#, created=created)
             #do you have to add date?calling on Post db model
             user_post.put()
-            self.redirect('/')
+            self.redirect('/blog/%s' % str(post.key().id()))
         else:
             error = "You need a subject and content." # and a date."
             self.render('newpost.html', subject=subject, content=content, error=error)
 #           just self.render('newpost.html')??????
 
-#class ViewPostHandler(webapp2.RequestHandler):
-    #def get(self, id):
-        #self.response.write(% id)
+class ViewPostHandler(Handler):#webapp2.RequestHandler
+    def get(self, id):
+        post = Post.get_by_id(int(id))
+        if not post:
+            self.error(404)
+            #self.render("Wrong" % id)
+        self.render("mainblog.html", post = post)
 
 app = webapp2.WSGIApplication([
-#    ('/', Initial),
+    ('/', Initial),
 #    ('/mainblog', MainBlog),
-    ('/', MainBlog),
-    ('/newpost', NewPost)
-#    webapp2.Route('/?/<id:\d+>', ViewPostHandler)
+    ('/blog', MainBlog),
+    ('/newpost', NewPost),
+    webapp2.Route('/blog/<id:\d+>', ViewPostHandler)
 ], debug=True)
