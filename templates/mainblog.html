@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="results">
+    <h2>Blog Postings</h2>
+    <br>
+    {% for value in results %}
+    <ul>
+        <li><h3>{{value.subject}} created on {{value.created.strftime
+            ("%B %d, %Y")}}</h3>
+            <p>{{value.content}}</p>
+        </li>
+    </ul>
+    {% endfor %}
+</div>
+
+#pyhton code to link to main.py
+
+
+
+
+{% endblock %}
