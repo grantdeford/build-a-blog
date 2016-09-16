@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Your Post</h2>
+    <!---<a href='/newpost'>{{subject}}</a>--->
+<div class="results">
+    <!---{{post.render}}-->
+    {% for value in results %}
+    <ul>
+        <li><a href='/blog'><h3>{{value.subject}}</h3></a>
+            <p>{{value.content}}<p>
+        </li>
+    </ul>
+    {% endfor %}
+
+
+
+</div>
+<br>
+<br>
+
+
+{% endblock %}

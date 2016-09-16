@@ -40,7 +40,10 @@ class Post(db.Model):
     content = db.TextProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
 #Text property is over 500 char
-
+#    def render(self):
+#        return render_str("post.html", p = self)
+#    def render(self):
+        #self.render(subject=subject, content=content)
 class Initial(Handler):
     def get(self):
         self.render('base.html')
@@ -59,7 +62,7 @@ class MainBlog(Handler):
         self.render('mainblog.html', **results_order)
 #        self.render('mainblog.html', subject=subject, content=content,
 #                    created=created, results=results)
-
+########self.get_posts(limit, offset)
 #    def get(self):
 #        self.render list_post()
         #not using base.html
@@ -76,7 +79,7 @@ class NewPost(Handler):
             user_post = Post(subject=subject, content=content)#, created=created)
             #do you have to add date?calling on Post db model
             user_post.put()
-            self.redirect('/blog/%s' % str(post.key().id()))
+            self.redirect('/blog/%s' % str(user_post.key().id()))
         else:
             error = "You need a subject and content." # and a date."
             self.render('newpost.html', subject=subject, content=content, error=error)
@@ -87,8 +90,13 @@ class ViewPostHandler(Handler):#webapp2.RequestHandler
         post = Post.get_by_id(int(id))
         if not post:
             self.error(404)
+            return
             #self.render("Wrong" % id)
-        self.render("mainblog.html", post = post)
+        self.render("permalink.html", post = post)##permalink.html had mainblog.html
+
+#def get_posts(limit, offset):
+#    posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC LIMIT 5 OFFSET count")
+#    return posts()
 
 app = webapp2.WSGIApplication([
     ('/', Initial),

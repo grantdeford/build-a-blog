@@ -6,7 +6,7 @@
     <br>
     {% for value in results %}
     <ul>
-        <li><a href= '/blog/%s' % str(post.key().id()%><h3>{{value.subject}} created on {{value.created.strftime
+        <li><a href= '/blog/{{ value.key().id() }}'><h3>{{value.subject}} created on {{value.created.strftime
             ("%B %d, %Y")}}</h3></a>
             <p>{{value.content}}</p>
         </li>
